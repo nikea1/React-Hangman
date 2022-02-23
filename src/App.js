@@ -1,9 +1,13 @@
-
+import {Footer} from './Components/Footer'
+import {GameBoard} from './Components/GameBoard'
+import {Header} from './Components/Header'
 
 function App() {
   return (
     <div className="App">
-      Hello World
+      <Header />
+      <GameBoard />
+      <Footer />
     </div>
   );
 }
