@@ -12,6 +12,6 @@ Link to older version of app: http://dry-hollows-84065.herokuapp.com/
 
 Adenike Adeyemi <nike.adeyemi1@gmail.com>
 
-## Copywrite
+## Copyright
 
 &copy; Adenike Adeyemi
