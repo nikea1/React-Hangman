@@ -2,7 +2,7 @@
 
 **Version 1.0.0**
 
-Remaking a Hangman I made six years ago in react bootcamp in order to practice using Reactjs.
+Remaking a Hangman app I made six years ago for Full Stack Development bootcamp in order to practice using Reactjs.
 
 Repository of the older version of app: https://github.com/nikea1/week-3-game
 
