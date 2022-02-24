@@ -1,11 +1,11 @@
-export function Status(){
+export function Status({status}){
 
     return(
         <div id="Status">
             <ul>
-                <li>Wins:<span id="wins">0</span></li>
-                <li>Guesses left: <span id="tries">10</span></li>
-                <li>Letters Guessed: <div id="lettersGuessed"></div></li>
+                <li>Wins:<span id="wins">{status.wins}</span></li>
+                <li>Guesses left: <span id="tries">{status.guesses}</span></li>
+                <li>Letters Guessed: <div id="lettersGuessed">{status.letters}</div></li>
             </ul>
         </div>
     )
