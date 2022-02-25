@@ -30,6 +30,7 @@ export function GameBoard(){
         wins: 0,
         guesses: 10,
         letters: [],
+        bucket: new Array(26).fill(0),
     })
 
     //Display data
@@ -47,32 +48,84 @@ export function GameBoard(){
         if(newGame){
          setWord(initBoard(Dictionary));
          setGameStatus(previousState => {
-             return {...previousState, guesses:10, letters:[]}
+             
+             return {...previousState, guesses:10, letters:[], bucket: new Array(26).fill(false)}
          })
          setNewGame(false);
         }
         else{
+            let c = e.key;
             //Filter out all keys except uppercase and capital letters
-            if(e.key.length > 1 || (e.key.charCodeAt(0) < 65) || ((e.key.charCodeAt(0) > 90) && (e.key.charCodeAt(0) < 97 )) || (e.key.charCodeAt(0) > 122)) return;
+            if(c.length > 1 || (c.toUpperCase().charCodeAt(0) < 65) || (c.toUpperCase().charCodeAt(0) > 90)) return;
 
-            console.log(e.key.charCodeAt(0));
-            //TODO compare keyed in letters with answer string.
-            //if match is found update display
-            //else check if letter had been guessed
-            //if not guessed yes push into guessed list decrement number of guesses
-            //else notify user that letter has been used already
-            //Check if we won AKA are there any "_" left and guesses left is not 0
-            //if there are no "_" and guess left is not 0 mincrement win ask user to play again
-            //if guess are 0 you lose, state the answer, ask user to play again.
-            //initialize and start new game.
+            // console.log(c.charCodeAt(0));
+           
+            //check if letter is used
+            if(gameStatus.bucket[c.toUpperCase().charCodeAt(0) - 65]){
+                console.log("Letter already used")
+            }else{
+                let f = [];
+                //Checked if keyed in letter in in the phrase
+                for(let i = 0; i < word.answer.length; i++){
+                    if(word.answer[i].toUpperCase() == c.toUpperCase()){
+                        console.log(`Found ${c} at ${i}`)
+                        f.push(i);
+                    } 
+                }// end of checking if letter is in phrase
+
+                //if letter was no found, update status add letter to guessed letter list 
+                if(f.length<1){
+                    console.log(`Letter ${c} was not found.`)
+                    let g = gameStatus.guesses - 1;
+                    let l = []
+                    gameStatus.letters.forEach(el => {
+                        l.push(el);
+                    })
+                    l.push(c);
+                    setGameStatus(previousState => {
+                        return {...previousState, guesses: g, letters: l}
+                    })
+                } //end of guessed letter list
+                //else update the display data
+                else{
+                    let ud = []
+                    word.display.forEach((element, j) => {
+                        ud[j] = element;
+                    })
+
+                    f.forEach(element =>{
+                        ud[element] = c;
+                    })
+
+                    setWord(previousState =>{
+                        return {...previousState, display: ud}
+                    })
+                } // end of display update
+                 //Update bucket list in game status
+                //make copy of old bucket list
+                 let bc = [];
+                 gameStatus.bucket.forEach((element, i) => {
+                     bc[i] = element;
+                 });
+                 //add new value
+                 bc[c.toUpperCase().charCodeAt(0) - 65] = true;
+                 setGameStatus(previousState =>{
+                    return {...previousState, bucket: bc}
+                })
+            }
+           
+            
+    
+            //TODO: else notify user that letter has been used already
+            //Check if we won AKA are there any "_" left and guesses left is not 0 or less
+                //if there are no "_" and guess left is not 0 mincrement win ask user to play again
+                //if guess are 0 you lose, state the answer, ask user to play again.
+                //initialize and start new game.
             
         }
     }
      
-    //listen for letters being typed
-        //check casing
-
-    //Display the game status down here
+    //Display and render the game status down here
     return(
         
         <div className='container'>
