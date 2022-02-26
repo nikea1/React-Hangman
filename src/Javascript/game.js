@@ -1,4 +1,4 @@
-const disneyMovies = [
+export const disneyMovies = [
     "Lilo and Stitch", 
     "Beauty and the Beast" , 
     "Lion King", 
@@ -9,21 +9,61 @@ const disneyMovies = [
     "Treasure Planet",
     "Tangled",
     "Frozen",
-    "Black Couldron",
+    "The Black Couldron",
     "Robin Hood",
     "Snow White",
-    "Aladin",
+    "Aladdin",
     "Sleeping Beauty",
     "Monsters Inc",
     "Moana",
     "Emperors New Groove",
     "Encanto",
+    "Zootopia",
+    "Mulan",
+    "Hunchback of Notre Dome",
+    "Brother Bear",
+    "Goofy Movie",
+    "Lady and the Tramp",
+    "Cinderella",
+    "Petes Dragon",
+    "The Little Mermaid",
+    "Enchanted",
+    "The Good Dinosaur",
+    "Fantasia",
+    "Pinocchio",
+    "The Three Caballeros",
+    "Alice in Wonderland",
+    "The Parent Trap",
+    "Pollyanna",
+    "One Hundred and One Dalmations",
+    "Mary Poppins",
+    "Jungle Book",
+    "The Aristocats",
+    "Bedknobs and Broomsticks",
+    "The Rescuers",
+    "The Many Adventures of Winnie the Pooh",
+    "The Fox and the Hound",
+    "Tron",
+    "The Great Mouse Detective",
+    "The Brave Little Toaster",
+    "The Mighty Ducks",
+    "Honey I Shrunk the Kids",
+    "The Nightmare Before Christmas",
+    "Hocus Pocus",
+    "Angels in the Outfield",
+    "The Santa Clause",
+    "Pocahontas",
+    "James and the Giant Peach",
+    "A Bugs Life",
+    "Pirates of the Carribbean",
+    "Finding Nemo",
+    "The Incredibles",
+    "Sky High",
+    "Ratatouille",
+    "Meet the Robinsons",
+    "High School Musical",
+    "The Princess and the Frog",
+    "Inside Out"
+
     ]
 
-function pickMovie(){
-   return disneyMovies[Math.floor(Math.random()*(disneyMovies.length))];
-}
-
-
-
-console.log(pickMovie());
