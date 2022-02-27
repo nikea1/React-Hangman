@@ -70,16 +70,16 @@ export function GameBoard(){
         }
     }, [gameStatus.haveWinner]);
 
-    //We have a loser
+    //Check for loser
     useEffect(()=>{
         if(gameStatus.guesses === 0){
             console.log("You lost")
             alert(`Game Over. \n The answer was "${word.answer}"`)
             setNewGame(true)
         }
-    },[gameStatus.bucket])
+    },[gameStatus.guesses])
 
-    document.onkeyup = function(e){
+    document.onkeydown = function(e){
         //Start a new game 
         //initialize the board
         if(newGame){
@@ -93,83 +93,81 @@ export function GameBoard(){
             }
          })
          setNewGame(false);
+         return;
         }
-        else{
-            let c = e.key; //get char
-            let cc = c.toUpperCase().charCodeAt(0)
-            //Filter out all keys except uppercase and capital letters
-            if(c.length > 1 || (cc < 65) || (cc > 90)) return;
 
-            // console.log(c.charCodeAt(0));
-           
-            //check if letter is used
-            if(gameStatus.bucket[cc - 65]){
-                console.log("Letter already used")
-                alert(`The letter ${c} is already used`)
-                //TODO: Fancy CSS and status display?
-                return;
+        let c = e.key; //get char
+        let cc = c.toUpperCase().charCodeAt(0)
+        //Filter out all keys except uppercase and capital letters
+        if(c.length > 1 || (cc < 65) || (cc > 90)) return;
 
+        // console.log(c.charCodeAt(0));
+        
+        //check if letter is used
+        if(gameStatus.bucket[cc - 65]){
+            console.log("Letter already used")
+            alert(`The letter ${c} is already used`)
+            //TODO: Fancy CSS and status display?
+            return;
+        }
+
+        //Update bucket list in game status
+        
+        //make copy of old bucket list
+        let bc = [...gameStatus.bucket];
+        
+        //add new value
+        bc[cc - 65] = true;
+        
+        //update bicket
+        setGameStatus(previousState =>{
+            return {...previousState, 
+                bucket: bc
             }
-            
-            let f = [];
-            //Checked if keyed in letter in in the phrase
-            for(let i = 0; i < word.answer.length; i++){
-                if(word.answer[i].toUpperCase() === c.toUpperCase()){
-                    console.log(`Found ${c} at ${i}`)
-                    f.push(i);
-                } 
-            }// end of checking if letter is in phrase
+        }) 
+        
+        let f = [];
+        //Checked if keyed in letter in in the phrase
+        for(let i = 0; i < word.answer.length; i++){
+            if(word.answer[i].toUpperCase() === c.toUpperCase()){
+                console.log(`Found ${c} at ${i}`)
+                f.push(i);
+            } 
+        }// end of checking if letter is in phrase
 
-            //if letter was not found, update status add letter to guessed letter list 
-            //and decrease the number of guesses
-            if(f.length<1){
-                console.log(`Letter ${c} was not found.`)
-                setGameStatus(previousState => {
-                    return {...previousState, guesses: previousState.guesses - 1, letters: [...previousState.letters,c]}
-                })
-            } //end of guessed letter list
-            //else update the display data
-            else{
-                let ud = []
-
-                //copy current display
-                word.display.forEach((element, j) => {
-                    ud[j] = element;
-                })
-                //replace blank spaces with keyed in letter
-                f.forEach(element =>{
-                    ud[element] = c;
-                })
-
-                //update display
-                setWord(previousState =>{
-                    return {...previousState, display: ud}
-                })
-            } // end of display update
-            
-            //Update bucket list in game status
-            
-            //make copy of old bucket list
-                let bc = [];
-                gameStatus.bucket.forEach((element, i) => {
-                    bc[i] = element;
-                });
-                
-                //add new value
-                bc[cc - 65] = true;
-                
-                //update backet
-                setGameStatus(previousState =>{
-                return {...previousState, bucket: bc}
+        //if letter was not found, update status add letter to guessed letter list 
+        //and decrease the number of guesses
+        if(f.length<1){
+            console.log(`Letter ${c} was not found.`)
+            setGameStatus(previousState => {
+                return {...previousState, 
+                    guesses: previousState.guesses - 1, 
+                    letters: [...previousState.letters,c]
+                }
             })
+        } //end of guessed letter list
+        //else update the display data
+        else{
             
-     
+            //copy current display
+            let ud = [...word.display]
+
+            //replace blank spaces with keyed in letter
+            f.forEach(index =>{
+                ud[index] = word.answer[index];
+            })
+
+            //update display
+            setWord(previousState =>{
+                return {...previousState, 
+                    display: ud
+                }
+            })
+        } // end of display update
             
-    
-            //TODO: fix useeffect warning of lose statement?
-            
-        }
-    }
+        //TODO: fix useeffect warning of lose statement?
+        //Make sure to get one key at a time
+    }//end of keyup event
      
     //Display and render the game status down here
     return(
