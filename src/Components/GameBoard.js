@@ -1,181 +1,118 @@
-import {useState, useEffect} from "react"
+import {useState, useEffect, useCallback} from "react"
 import {Status} from './Status'
 import { PlayArea } from './PlayArea'
-import {disneyMovies} from '../Javascript/game'
+import {disneyMovies} from '../Javascript/disneyMovies'
+let initWord = disneyMovies[Math.floor(Math.random()*disneyMovies.length)]
 
-function loadWord(Dictionary){
-    if(!Dictionary) return {answer:"", display:[]};
-   
-    let word = {answer:"", display:[]}
-
-    word.answer = Dictionary[Math.floor(Math.random()*Dictionary.length)]
-    
-    for(let i = 0; i < word.answer.length; i++){
-
-        word.display.push((word.answer.charAt(i)===' ') ? '\u00A0':'_')
-    }
-
-    // console.log(word);
-    
-    return word;
+let initGlobalStatus = {
+    key: '',
+    word: initWord,
+    foundIndex: [],
+    found: true,
+    isWinner: 0,
+    bucket: new Array(26).fill(false),
+    isPlaying: true,
+    resetGame: false
 }
 
 
-
 export function GameBoard(){
-
-    let Dictionary = disneyMovies;
     
-    const [newGame, setNewGame] = useState(true);
-    //Status data
-    const [gameStatus, setGameStatus] = useState({
-        wins: 0,
-        guesses: 10,
-        letters: [],
-        bucket: new Array(26).fill(0),
-        haveWinner: false,
-    })
+    const [globalStatus, setGlobalStatus] = useState(initGlobalStatus)
+    console.log("Rendering Game Board...")
+    // console.log("Current global status at Render: ", globalStatus)
+    
+    //callback function for found flag
+    function changeFound (bool){
+        setGlobalStatus((previousState)=>{
+            return {...previousState, found: bool}
+        })
+    }
 
-    //Display data
-    const [word, setWord] = useState({
-        answer: '',
-        display: []
-    })
+    //callback function for winner state
+    function changeWinner(s){
+        setGlobalStatus((previousState)=>{
+            return {...previousState, isWinner: s, isPlaying: false}
+        })
+    }
 
-    //check for winner
-    useEffect(() => {
-        //Check if phase is solved
-        if(!newGame){
-            for(let i = 0; i < word.display.length; i++){
-                if(word.display[i] === '_') return;
-            }
-            
-            setGameStatus(previousState=>{
-                return {...previousState, haveWinner:true}
-            })
-           
-        }
-    }, [newGame, word.display])
-
-    //We have a Winner!
+    //Keyboard event effect
     useEffect(()=>{
-        //Check if phase is solved
-        console.log(`haveWinner is ${gameStatus.haveWinner}`)
-        if(gameStatus.haveWinner){
-            alert("You Win!")
-            setGameStatus(previousState => {
-                return {...previousState, wins: previousState.wins + 1}
-            })
-            setNewGame(true)
-        }
-    }, [gameStatus.haveWinner]);
+       
+        window.onkeydown = (e) => {
+            //reset Game on keypress
+            if(!globalStatus.isPlaying){
+                setGlobalStatus(previousState => {
+                    return {...previousState, resetGame: true,  word: disneyMovies[Math.floor(Math.random()*disneyMovies.length)]}
+                })
+                return;
+            }
+            //processes key press
+            let k = e.key;
+            if(k.length > 1 || k.toUpperCase().charCodeAt() < 65 || k.toUpperCase().charCodeAt() > 90 )return;
+            if(globalStatus.bucket[k.toUpperCase().charCodeAt() - 65]){
+                console.log("Letter already used")
+                return;
+            };
 
-    //Check for loser
+            // console.log(`Getting key ${k}`)
+            //update letter bucket
+            let bc = [...globalStatus.bucket]
+            bc[k.toUpperCase().charCodeAt()-65] = true;
+
+            // console.log("Finding Indices...")
+            // console.log(`Checking for letter ${globalStatus.key} in secret word`)
+            
+            let f = []
+            // console.log(globalStatus.word)
+
+            for(let i = 0; i < globalStatus.word.length; i++){
+                if(globalStatus.word.charAt(i).toUpperCase() === k.toUpperCase()){
+                    f.push(i);
+                }
+            }
+
+            //go update status, the letter is not in the word
+            if(f.length < 1){
+                setGlobalStatus(previousState=>{
+                    return {...previousState, key: k, bucket: bc, found: false }
+                })
+                return;
+            }
+
+            console.log(`found letters ${k}`)
+            console.log(`Now updating global state...`)
+            //go update display, we found the letter
+            setGlobalStatus(previousState=>{
+                return {...previousState, key: k, bucket: bc, foundIndex: f }
+            })
+        }
+    })// end of keyboard event
+
+    //Reset global state
     useEffect(()=>{
-        if(gameStatus.guesses === 0){
-            console.log("You lost")
-            alert(`Game Over. \n The answer was "${word.answer}"`)
-            setNewGame(true)
-        }
-    },[gameStatus.guesses])
-
-    document.onkeydown = function(e){
-        //Start a new game 
-        //initialize the board
-        if(newGame){
-         setWord(loadWord(Dictionary));
-         setGameStatus(previousState => {
-             return {...previousState, 
-                guesses:10, 
-                letters:[], 
-                bucket: new Array(26).fill(false), 
-                haveWinner:false
+        if(!globalStatus.resetGame) return;
+        setGlobalStatus((previousState)=>{
+            return {...previousState,
+                key: '',
+                foundIndex: [],
+                found: true,
+                isWinner: 0,
+                bucket: new Array(26).fill(false),
+                isPlaying: true,
+                resetGame: false
             }
-         })
-         setNewGame(false);
-         return;
-        }
+        })
+    }, [globalStatus.resetGame])
 
-        let c = e.key; //get char
-        let cc = c.toUpperCase().charCodeAt(0)
-        //Filter out all keys except uppercase and capital letters
-        if(c.length > 1 || (cc < 65) || (cc > 90)) return;
 
-        // console.log(c.charCodeAt(0));
-        
-        //check if letter is used
-        if(gameStatus.bucket[cc - 65]){
-            console.log("Letter already used")
-            alert(`The letter ${c} is already used`)
-            //TODO: Fancy CSS and status display?
-            return;
-        }
-
-        //Update bucket list in game status
-        
-        //make copy of old bucket list
-        let bc = [...gameStatus.bucket];
-        
-        //add new value
-        bc[cc - 65] = true;
-        
-        //update bicket
-        setGameStatus(previousState =>{
-            return {...previousState, 
-                bucket: bc
-            }
-        }) 
-        
-        let f = [];
-        //Checked if keyed in letter in in the phrase
-        for(let i = 0; i < word.answer.length; i++){
-            if(word.answer[i].toUpperCase() === c.toUpperCase()){
-                console.log(`Found ${c} at ${i}`)
-                f.push(i);
-            } 
-        }// end of checking if letter is in phrase
-
-        //if letter was not found, update status add letter to guessed letter list 
-        //and decrease the number of guesses
-        if(f.length<1){
-            console.log(`Letter ${c} was not found.`)
-            setGameStatus(previousState => {
-                return {...previousState, 
-                    guesses: previousState.guesses - 1, 
-                    letters: [...previousState.letters,c]
-                }
-            })
-        } //end of guessed letter list
-        //else update the display data
-        else{
-            
-            //copy current display
-            let ud = [...word.display]
-
-            //replace blank spaces with keyed in letter
-            f.forEach(index =>{
-                ud[index] = word.answer[index];
-            })
-
-            //update display
-            setWord(previousState =>{
-                return {...previousState, 
-                    display: ud
-                }
-            })
-        } // end of display update
-            
-        //TODO: fix useeffect warning of lose statement?
-        //Make sure to get one key at a time
-    }//end of keyup event
-     
     //Display and render the game status down here
     return(
         
         <div className='container'>
             <div className='wrapper'>
-                <Status status={gameStatus} />
-                <PlayArea words={word} game={newGame} />
+                <Status globalStatus={globalStatus} flag={changeFound} changeWinner={changeWinner}/>
+                <PlayArea globalStatus={globalStatus} changeWinner={changeWinner} />
             </div>
         </div>
     )
