@@ -1,6 +1,14 @@
 * {
     box-sizing: border-box;
+    margin:0;
+    padding:0;
   }
+
+  ul{
+      list-style: none;
+  }
+
+
 
 html, body, #root, .App{
     height: 100%;
@@ -9,6 +17,10 @@ html, body, #root, .App{
 .App{
     display: flex;
     flex-direction: column;
+}
+
+header{
+    margin-bottom: 1em;
 }
 
 .container{
@@ -22,6 +34,10 @@ html, body, #root, .App{
     flex-wrap: wrap;
     justify-content: center;
     gap: 2em;
+}
+
+#Status, #PlayArea{
+    padding: 1em;
 }
 
 #Status{

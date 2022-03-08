@@ -109,11 +109,11 @@ export function GameBoard(){
     //Display and render the game status down here
     return(
         
-        <div className='container'>
+        <main className='container'>
             <div className='wrapper'>
                 <Status globalStatus={globalStatus} flag={changeFound} changeWinner={changeWinner}/>
                 <PlayArea globalStatus={globalStatus} changeWinner={changeWinner} />
             </div>
-        </div>
+        </main>
     )
 }

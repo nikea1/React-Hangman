@@ -1,8 +1,8 @@
 export function Header(){
     return(
-        <div id="Header">
+        <header id="Header">
             <h1>Disney Hangman</h1>
-        </div>
+        </header>
         
     )
 }
