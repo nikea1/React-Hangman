@@ -91,15 +91,9 @@ export function GameBoard(){
                 })
                 return;
             }
-
             getKey(e.key);
         }
     })// end of keyboard event
-
-    //process key
-    useEffect(() => {
-
-    })
 
     //Reset global state
     useEffect(()=>{
@@ -125,7 +119,7 @@ export function GameBoard(){
             <div className='wrapper'>
                 <Status globalStatus={globalStatus} flag={changeFound} changeWinner={changeWinner}/>
                 <PlayArea globalStatus={globalStatus} changeWinner={changeWinner} />
-                <Keyboard  onClick={getKey}/>
+                <Keyboard  onClick={getKey} onKey={globalStatus.bucket}/>
             </div>
         </main>
     )

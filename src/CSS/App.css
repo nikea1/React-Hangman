@@ -66,6 +66,10 @@ header{
     margin:1px ;
 }
 
+.used{
+    background: grey;
+}
+
 @media screen and (max-width: 450px) {
     .wrapper{
         flex-direction: column;
