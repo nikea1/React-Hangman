@@ -1,6 +1,7 @@
 import {useState, useEffect, useCallback} from "react"
 import {Status} from './Status'
 import { PlayArea } from './PlayArea'
+import { Keyboard } from "./Keyboard"
 import {disneyMovies} from '../Javascript/disneyMovies'
 let initWord = disneyMovies[Math.floor(Math.random()*disneyMovies.length)]
 
@@ -36,19 +37,10 @@ export function GameBoard(){
         })
     }
 
-    //Keyboard event effect
-    useEffect(()=>{
-       
-        window.onkeydown = (e) => {
-            //reset Game on keypress
-            if(!globalStatus.isPlaying){
-                setGlobalStatus(previousState => {
-                    return {...previousState, resetGame: true,  word: disneyMovies[Math.floor(Math.random()*disneyMovies.length)]}
-                })
-                return;
-            }
-            //processes key press
-            let k = e.key;
+    function getKey(bk){
+            console.log(`bk is`, bk)
+        //processes key press
+            let k = bk;
             if(k.length > 1 || k.toUpperCase().charCodeAt() < 65 || k.toUpperCase().charCodeAt() > 90 )return;
             if(globalStatus.bucket[k.toUpperCase().charCodeAt() - 65]){
                 console.log("Letter already used")
@@ -86,8 +78,28 @@ export function GameBoard(){
             setGlobalStatus(previousState=>{
                 return {...previousState, key: k, bucket: bc, foundIndex: f }
             })
+    }
+
+    //Keyboard event effect
+    useEffect(()=>{
+       
+        window.onkeydown = (e) => {
+            //reset Game on keypress
+            if(!globalStatus.isPlaying){
+                setGlobalStatus(previousState => {
+                    return {...previousState, resetGame: true,  word: disneyMovies[Math.floor(Math.random()*disneyMovies.length)]}
+                })
+                return;
+            }
+
+            getKey(e.key);
         }
     })// end of keyboard event
+
+    //process key
+    useEffect(() => {
+
+    })
 
     //Reset global state
     useEffect(()=>{
@@ -113,6 +125,7 @@ export function GameBoard(){
             <div className='wrapper'>
                 <Status globalStatus={globalStatus} flag={changeFound} changeWinner={changeWinner}/>
                 <PlayArea globalStatus={globalStatus} changeWinner={changeWinner} />
+                <Keyboard  onClick={getKey}/>
             </div>
         </main>
     )

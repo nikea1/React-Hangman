@@ -101,9 +101,10 @@ export function PlayArea({globalStatus, changeWinner}){
                     {(counter > 1) ? <circle cx="150" cy="55" r="15" stroke="black" /> : <></>}         {/* head */}
                     {(counter > 2) ? <line x1="150" y1="70" x2="150" y2="125" stroke="black" /> : <></>}{/* body */}
                     {(counter > 3) ? <line x1="150" y1="70" x2="135" y2="105" stroke="black" />: <></>} {/* left arm */}
-                    {(counter > 4) ? <line x1="150" y1="125" x2="135" y2={105+(125-70)} stroke="black" /> : <></>} {/* left leg */}
-                    {(counter > 5) ? <line x1="150" y1="70" x2="165" y2="105" stroke="black" /> : <></>}{/* right arm */}
+                    {(counter > 4) ? <line x1="150" y1="70" x2="165" y2="105" stroke="black" /> : <></>}{/* right arm */}
+                    {(counter > 5) ? <line x1="150" y1="125" x2="135" y2={105+(125-70)} stroke="black" /> : <></>} {/* left leg */}
                     {(counter > 6) ? <line x1="150" y1="125" x2="165" y2={105+(125-70)} stroke="black" /> : <></>} {/* right leg */}
+                    Sorry Your Web browser does not support SVG. :(
                 </svg>
             </div>
             <h3 className="display">{display.display.join(' ')}</h3>

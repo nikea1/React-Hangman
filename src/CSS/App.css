@@ -8,7 +8,9 @@
       list-style: none;
   }
 
-
+html{
+    background: dodgerblue;
+}
 
 html, body, #root, .App{
     height: 100%;
@@ -49,6 +51,19 @@ header{
     background: gold;
     flex: 2 0 auto;
     text-align: center;
+}
+
+.keyboard{
+    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.keys{
+    padding: 8px 0;
+    width: 40px;
+    margin:1px ;
 }
 
 @media screen and (max-width: 450px) {
