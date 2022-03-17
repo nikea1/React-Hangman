@@ -37,12 +37,14 @@ export function GameBoard(){
         })
     }
 
+    //Resets the game
     function resetGame(){
         setGlobalStatus(previousState => {
             return {...previousState, resetGame: true,  word: disneyMovies[Math.floor(Math.random()*disneyMovies.length)]}
         })
     }
 
+    //processes the letter
     function getKey(bk){
             console.log(`bk is`, bk)
         //processes key press
@@ -94,9 +96,6 @@ export function GameBoard(){
             
             //reset Game on keypress
             if(!globalStatus.isPlaying){
-                // setGlobalStatus(previousState => {
-                //     return {...previousState, resetGame: true,  word: disneyMovies[Math.floor(Math.random()*disneyMovies.length)]}
-                // })
                 resetGame();
                 return;
             }

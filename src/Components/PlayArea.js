@@ -8,8 +8,10 @@ function loadWord(word){
     // word.answer = Dictionary[Math.floor(Math.random()*Dictionary.length)]
     
     for(let i = 0; i < displayWord.answer.length; i++){
+        let d = displayWord.answer.toUpperCase().charCodeAt(i);
+        displayWord.display.push((d >=65 && d <= 90  ) ? '_': displayWord.answer.charAt(i));
 
-        displayWord.display.push((displayWord.answer.charAt(i)===' ') ? ' ':'_')
+        // displayWord.display.push((displayWord.answer.charAt(i)===' ') ? ' ':'_')
     }
 
     // console.log(word);
