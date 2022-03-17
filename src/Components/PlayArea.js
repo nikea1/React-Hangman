@@ -9,7 +9,7 @@ function loadWord(word){
     
     for(let i = 0; i < displayWord.answer.length; i++){
 
-        displayWord.display.push((displayWord.answer.charAt(i)===' ') ? '\u00A0':'_')
+        displayWord.display.push((displayWord.answer.charAt(i)===' ') ? ' ':'_')
     }
 
     // console.log(word);
@@ -107,7 +107,7 @@ export function PlayArea({globalStatus, changeWinner}){
                     Sorry Your Web browser does not support SVG. :(
                 </svg>
             </div>
-            <p className="display">{display.display.join(' ')}</p>
+            <p className="display">{display.display.join('')}</p>
             {/* <div className="newGameprompt">{(!globalStatus.isPlaying) ? <p>Press Any Key to Start a New Game!</p> : ""}</div> */}
         </div>
     )
