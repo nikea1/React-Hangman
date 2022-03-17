@@ -107,7 +107,7 @@ export function PlayArea({globalStatus, changeWinner}){
                     Sorry Your Web browser does not support SVG. :(
                 </svg>
             </div>
-            <h3 className="display">{display.display.join(' ')}</h3>
+            <p className="display">{display.display.join(' ')}</p>
             <div className="newGameprompt">{(!globalStatus.isPlaying) ? <p>Press Any Key to Start a New Game!</p> : ""}</div>
         </div>
     )

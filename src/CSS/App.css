@@ -1,4 +1,4 @@
-* {
+ * {
     box-sizing: border-box;
     margin:0;
     padding:0;
@@ -8,75 +8,42 @@
       list-style: none;
   }
 
-html{
-    background: dodgerblue;
-}
+  .App{
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+  }
 
-html, body, #root, .App{
-    height: 100%;
-}
+  main{
+      flex: 1 0 auto;
+  }
 
-.App{
-    display: flex;
-    flex-direction: column;
-}
+  .display{
+      font-weight: 700;
+  }
 
-header{
-    margin-bottom: 1em;
-}
+  #Status, #PlayArea, #Keyboard{
+      margin-top: 1em;
+  }
 
-.container{
-    flex: 1 0 auto;
-    width:80%;
-    margin: 0 auto;
-}
- 
-.wrapper{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2em;
-}
+  #Keyboard{
+    padding: 0 1em;
+  }
 
-#Status, #PlayArea{
-    padding: 1em;
-}
-
-#Status{
-    background: royalblue;
-    flex: 1 0 auto;
-}
-
-#PlayArea{
-    background: gold;
-    flex: 2 0 auto;
-    text-align: center;
-}
-
-.keyboard{
-    
+  #Keyboard ul{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-}
+  }
 
 .keys{
     padding: 8px 0;
-    width: 40px;
-    margin:1px ;
+    width: 36px;
+    margin:2px ;
 }
 
 .used{
     background: grey;
 }
 
-@media screen and (max-width: 450px) {
-    .wrapper{
-        flex-direction: column;
-    }
-}
-
-footer{
-    background: indigo;
-    color: aliceblue;
-}

@@ -84,6 +84,8 @@ export function GameBoard(){
     useEffect(()=>{
        
         window.onkeydown = (e) => {
+
+            
             //reset Game on keypress
             if(!globalStatus.isPlaying){
                 setGlobalStatus(previousState => {
@@ -119,7 +121,7 @@ export function GameBoard(){
             <div className='wrapper'>
                 <Status globalStatus={globalStatus} flag={changeFound} changeWinner={changeWinner}/>
                 <PlayArea globalStatus={globalStatus} changeWinner={changeWinner} />
-                <Keyboard  onClick={getKey} onKey={globalStatus.bucket}/>
+                <Keyboard  onClick={getKey} onKey={globalStatus.bucket} />
             </div>
         </main>
     )
