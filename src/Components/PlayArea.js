@@ -108,7 +108,7 @@ export function PlayArea({globalStatus, changeWinner}){
                 </svg>
             </div>
             <p className="display">{display.display.join(' ')}</p>
-            <div className="newGameprompt">{(!globalStatus.isPlaying) ? <p>Press Any Key to Start a New Game!</p> : ""}</div>
+            {/* <div className="newGameprompt">{(!globalStatus.isPlaying) ? <p>Press Any Key to Start a New Game!</p> : ""}</div> */}
         </div>
     )
 }

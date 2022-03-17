@@ -16,11 +16,12 @@ function Key({letter, onClick, checkKey}){
     )
 }
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
-export function Keyboard({onClick, onKey}){
+export function Keyboard({onClick, onKey, reset}){
 
     return (<div id="Keyboard">
         <ul>
             {letters.map((l, i)=> <li key={i}><Key checkKey={onKey[l.charCodeAt()-65]} onClick={onClick} letter={l} /></li>)}
         </ul>
+        <button className="newGame" onClick={()=>reset()}>New Game</button>
     </div>)
 }

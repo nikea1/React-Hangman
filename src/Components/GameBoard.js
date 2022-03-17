@@ -37,6 +37,12 @@ export function GameBoard(){
         })
     }
 
+    function resetGame(){
+        setGlobalStatus(previousState => {
+            return {...previousState, resetGame: true,  word: disneyMovies[Math.floor(Math.random()*disneyMovies.length)]}
+        })
+    }
+
     function getKey(bk){
             console.log(`bk is`, bk)
         //processes key press
@@ -88,9 +94,10 @@ export function GameBoard(){
             
             //reset Game on keypress
             if(!globalStatus.isPlaying){
-                setGlobalStatus(previousState => {
-                    return {...previousState, resetGame: true,  word: disneyMovies[Math.floor(Math.random()*disneyMovies.length)]}
-                })
+                // setGlobalStatus(previousState => {
+                //     return {...previousState, resetGame: true,  word: disneyMovies[Math.floor(Math.random()*disneyMovies.length)]}
+                // })
+                resetGame();
                 return;
             }
             getKey(e.key);
@@ -121,7 +128,7 @@ export function GameBoard(){
             <div className='wrapper'>
                 <Status globalStatus={globalStatus} flag={changeFound} changeWinner={changeWinner}/>
                 <PlayArea globalStatus={globalStatus} changeWinner={changeWinner} />
-                <Keyboard  onClick={getKey} onKey={globalStatus.bucket} />
+                <Keyboard reset={resetGame} onClick={getKey} onKey={globalStatus.bucket} />
             </div>
         </main>
     )

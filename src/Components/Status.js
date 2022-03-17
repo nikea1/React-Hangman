@@ -2,8 +2,7 @@ import { useEffect, useState } from "react"
 
 let initStatus = {
     wins: 0,
-    guesses: 7,
-    letters: []
+    guesses: 7
 }
 
 export function Status({globalStatus, flag, changeWinner}){
@@ -17,7 +16,7 @@ export function Status({globalStatus, flag, changeWinner}){
         // console.log("check found", globalStatus.found)
         if ( !globalStatus.isPlaying || globalStatus.found) return;
            setStatus(previousState=>{
-               return {...previousState, guesses: previousState.guesses - 1, letters: [...previousState.letters, globalStatus.key]}
+               return {...previousState, guesses: previousState.guesses - 1}
            })
             flag(true)
     }, [globalStatus.found])
@@ -42,7 +41,7 @@ export function Status({globalStatus, flag, changeWinner}){
     useEffect(() => {
         if(!globalStatus.resetGame) return;
         setStatus(previousState => {
-            return{...previousState, guesses:7, letters: []}
+            return{...previousState, guesses:7}
         })
     },[globalStatus.resetGame])
 
@@ -51,7 +50,7 @@ export function Status({globalStatus, flag, changeWinner}){
             <ul>
                 <li>Wins: <span id="wins">{status.wins}</span></li>
                 <li>Guesses left: <span id="tries">{status.guesses}</span></li>
-                <li>Letters Guessed: <div id="lettersGuessed">{status.letters.join(", ")}</div></li>
+                {/* <li>Letters Guessed: <div id="lettersGuessed">{status.letters.join(", ")}</div></li> */}
             </ul>
         </div>
     ) 
