@@ -5,7 +5,15 @@ let initStatus = {
     guesses: 7
 }
 
-export function Status({globalStatus, flag, changeWinner}){
+/*
+Globalstaus:
+isPlaying
+found
+isWinner
+reset
+*/
+
+export function Status({globalStatus, setGameState}){
 
     const [status, setStatus] = useState(initStatus)
     console.log(`Rendering Status Area...`)
@@ -18,15 +26,17 @@ export function Status({globalStatus, flag, changeWinner}){
            setStatus(previousState=>{
                return {...previousState, guesses: previousState.guesses - 1}
            })
-            flag(true)
-    }, [globalStatus.found])
+            setGameState({type: 'found'})
+        
+    }, [globalStatus.found, globalStatus.isPlaying])
 
     //use Effect to check for game over
     useEffect(()=>{
         if(!globalStatus.isPlaying || status.guesses > 0) return;
         console.log("Sending lost to Parent and ending the game")
-        changeWinner(-1)
-    }, [status.guesses])
+        setGameState({type: "lose"})
+        // changeWinner(-1)
+    }, [status.guesses, globalStatus.isPlaying])
    
     //If winner flag is triggered
     useEffect(() => {

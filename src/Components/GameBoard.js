@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from "react"
+import {useEffect, useReducer} from "react"
 import {Status} from './Status'
 import { PlayArea } from './PlayArea'
 import { Keyboard } from "./Keyboard"
@@ -16,107 +16,99 @@ let initGlobalStatus = {
     resetGame: false
 }
 
+function reducer(state, action){
+    switch(action.type){
+        case "found":
+            return {...state, found: true}
+        case "not found":
+            return {...state, found: false}
+        case "win":
+            return {...state, isWinner: 1, isPlaying: false}
+        case "lose":
+            return {...state, isWinner: -1, isPlaying: false}
+        case "get key":
+            console.log("Getting letter is reducer")
+            let letter = action.payload;
+            console.log(`${letter} is in`)
+            //Make sure we have single character keys
+            if(letter.length > 1) return;
+
+            //make sure its a letter in the alphabet
+            if(letter.toUpperCase().charCodeAt(0) < 65 || letter.toUpperCase().charCodeAt(0) > 90) return;
+
+            //make sure the letter has not be used already
+            if(state.bucket[letter.toUpperCase().charCodeAt(0) - 65]){ 
+                console.log(`${letter} has already been used.`)    
+                return;
+            }
+
+            //update bucket
+            let bc = [...state.bucket]
+            bc[letter.charCodeAt()-65] = true;
+
+            //check if the letter is in the word
+            let f = []
+
+            for(let i = 0; i < state.word.length; i++){
+                if(state.word.charAt(i).toUpperCase() === letter.toUpperCase()){
+                    f.push(i)
+                }
+            } 
+
+            //if we can't find the letter
+            if(f.length < 1) {
+                console.log("Found the letter")
+                return {...state, key: letter, bucket: bc, found: false}
+            }
+
+            console.log("Cannot find letter")
+            return {...state,key: letter, bucket: bc, foundIndex: f}
+        case "reset":
+            console.log("RESETTING THE GAME in REDUCER")
+            return {...state, resetGame:true, word: disneyMovies[Math.floor(Math.random()*disneyMovies.length)]}
+        case "reinitialize":
+            return {...state, 
+            key: '',
+            foundIndex: [],
+            found: true,
+            isWinner: 0,
+            bucket: new Array(26).fill(false),
+            isPlaying: true,
+            resetGame: false
+            }
+        default:
+            throw new Error();
+    }
+}
+
 
 export function GameBoard(){
     
-    const [globalStatus, setGlobalStatus] = useState(initGlobalStatus)
+    
+    const [globalStatus, dispatch] = useReducer(reducer, initGlobalStatus);
     console.log("Rendering Game Board...")
     // console.log("Current global status at Render: ", globalStatus)
     
-    //callback function for found flag
-    function changeFound (bool){
-        setGlobalStatus((previousState)=>{
-            return {...previousState, found: bool}
-        })
-    }
-
-    //callback function for winner state
-    function changeWinner(s){
-        setGlobalStatus((previousState)=>{
-            return {...previousState, isWinner: s, isPlaying: false}
-        })
-    }
-
-    //Resets the game
-    function resetGame(){
-        setGlobalStatus(previousState => {
-            return {...previousState, resetGame: true,  word: disneyMovies[Math.floor(Math.random()*disneyMovies.length)]}
-        })
-    }
-
-    //processes the letter
-    function getKey(bk){
-            console.log(`bk is`, bk)
-        //processes key press
-            let k = bk;
-            if(k.length > 1 || k.toUpperCase().charCodeAt() < 65 || k.toUpperCase().charCodeAt() > 90 )return;
-            if(globalStatus.bucket[k.toUpperCase().charCodeAt() - 65]){
-                console.log("Letter already used")
-                return;
-            };
-
-            // console.log(`Getting key ${k}`)
-            //update letter bucket
-            let bc = [...globalStatus.bucket]
-            bc[k.toUpperCase().charCodeAt()-65] = true;
-
-            // console.log("Finding Indices...")
-            // console.log(`Checking for letter ${globalStatus.key} in secret word`)
-            
-            let f = []
-            // console.log(globalStatus.word)
-
-            for(let i = 0; i < globalStatus.word.length; i++){
-                if(globalStatus.word.charAt(i).toUpperCase() === k.toUpperCase()){
-                    f.push(i);
-                }
-            }
-
-            //go update status, the letter is not in the word
-            if(f.length < 1){
-                setGlobalStatus(previousState=>{
-                    return {...previousState, key: k, bucket: bc, found: false }
-                })
-                return;
-            }
-
-            console.log(`found letters ${k}`)
-            console.log(`Now updating global state...`)
-            //go update display, we found the letter
-            setGlobalStatus(previousState=>{
-                return {...previousState, key: k, bucket: bc, foundIndex: f }
-            })
-    }
-
     //Keyboard event effect
     useEffect(()=>{
        
         window.onkeydown = (e) => {
 
-            
             //reset Game on keypress
             if(!globalStatus.isPlaying){
-                resetGame();
+                dispatch({type: "reset"})
                 return;
             }
-            getKey(e.key);
+            console.log("Running dispatch for letters")
+            dispatch({type: "get key", payload: e.key})
         }
     })// end of keyboard event
 
     //Reset global state
     useEffect(()=>{
         if(!globalStatus.resetGame) return;
-        setGlobalStatus((previousState)=>{
-            return {...previousState,
-                key: '',
-                foundIndex: [],
-                found: true,
-                isWinner: 0,
-                bucket: new Array(26).fill(false),
-                isPlaying: true,
-                resetGame: false
-            }
-        })
+        console.log("Resetting the game with dispatch")
+        dispatch({type: "reinitialize"})
     }, [globalStatus.resetGame])
 
 
@@ -125,9 +117,9 @@ export function GameBoard(){
         
         <main className='container'>
             <div className='wrapper'>
-                <Status globalStatus={globalStatus} flag={changeFound} changeWinner={changeWinner}/>
-                <PlayArea globalStatus={globalStatus} changeWinner={changeWinner} />
-                <Keyboard reset={resetGame} onClick={getKey} onKey={globalStatus.bucket} />
+                <Status globalStatus={globalStatus} setGameState={dispatch}/>
+                <PlayArea globalStatus={globalStatus} setGameState={dispatch}/>
+                <Keyboard onKey={globalStatus.bucket} setGameState={dispatch}/>
             </div>
         </main>
     )

@@ -10,8 +10,6 @@ function loadWord(word){
     for(let i = 0; i < displayWord.answer.length; i++){
         let d = displayWord.answer.toUpperCase().charCodeAt(i);
         displayWord.display.push((d >=65 && d <= 90  ) ? '_': displayWord.answer.charAt(i));
-
-        // displayWord.display.push((displayWord.answer.charAt(i)===' ') ? ' ':'_')
     }
 
     // console.log(word);
@@ -21,17 +19,19 @@ function loadWord(word){
 
 // function displayPlayArea {}
 
+/* */
+
 function displayResult(isWinner, answer){
     // let {isWinner, answer} = gs;
-    if(isWinner === 1) return "You Win";
-    if(isWinner === -1) return "Game Over! The answer was '"+answer+"'";
-    return;
+    if(isWinner === 1) return( <h2>You Win</h2>);
+    if(isWinner === -1) return (<h2>Game Over! The answer was '{answer}'</h2>);
+    return (<></>);
 }
 
-export function PlayArea({globalStatus, changeWinner}){
+export function PlayArea({globalStatus, setGameState}){
  
     const [display, setDisplay] = useState(loadWord(globalStatus.word))
-    const [counter, setCounter] = useState(0);
+    const [counter, setCounter] = useState(7);
     console.log("rendering Play Area...")
     // console.log(`Current Display at render: `, display);
 
@@ -44,7 +44,7 @@ export function PlayArea({globalStatus, changeWinner}){
         if(globalStatus.isPlaying && globalStatus.found){
             let ud = [...display.display]
             globalStatus.foundIndex.forEach(i=>{
-                ud[i] = globalStatus.word[i]
+                ud[i] = display.answer[i]
             })
 
             setDisplay(previousState => {
@@ -52,7 +52,7 @@ export function PlayArea({globalStatus, changeWinner}){
             })
             return
         }
-        setCounter(counter + 1)
+        setCounter(counter - 1)
     }, [globalStatus.key])
 
 
@@ -70,7 +70,8 @@ export function PlayArea({globalStatus, changeWinner}){
             }
         }
         console.log("Sending isWinner back to parent and ending the game")
-        changeWinner(1)
+        // changeWinner(1)
+        setGameState({type: 'win'})
 
     }, [display.display])
 
@@ -83,7 +84,7 @@ export function PlayArea({globalStatus, changeWinner}){
             
             return {...previousState, ...newWord}
         })
-        setCounter(0);
+        setCounter(7);
         
     }, [ globalStatus.resetGame])
     
@@ -91,7 +92,7 @@ export function PlayArea({globalStatus, changeWinner}){
     return(
         
         <div id="PlayArea">
-            <h2 className="results">{(!globalStatus.isPlaying) ? displayResult(globalStatus.isWinner, globalStatus.word) : ''}</h2>
+            {!globalStatus.isPlaying && displayResult(globalStatus.isWinner, display.answer)}
             <div className="hangman">
                 <svg height="200" width="200">
                     <line x1="50" y1="180" x2="150" y2="180" stroke="black" />{/* Base */}
@@ -99,13 +100,13 @@ export function PlayArea({globalStatus, changeWinner}){
                     <line x1="100" y1="20" x2="150" y2="20" stroke="black" /> {/* Beam */}
                     
                     {/* Draw the man */}
-                    {(counter > 0) ? <line x1="150" y1="20" x2="150" y2="40" stroke="black" /> : <></>} {/* Rope */}
-                    {(counter > 1) ? <circle cx="150" cy="55" r="15" stroke="black" /> : <></>}         {/* head */}
-                    {(counter > 2) ? <line x1="150" y1="70" x2="150" y2="125" stroke="black" /> : <></>}{/* body */}
-                    {(counter > 3) ? <line x1="150" y1="70" x2="135" y2="105" stroke="black" />: <></>} {/* left arm */}
-                    {(counter > 4) ? <line x1="150" y1="70" x2="165" y2="105" stroke="black" /> : <></>}{/* right arm */}
-                    {(counter > 5) ? <line x1="150" y1="125" x2="135" y2={105+(125-70)} stroke="black" /> : <></>} {/* left leg */}
-                    {(counter > 6) ? <line x1="150" y1="125" x2="165" y2={105+(125-70)} stroke="black" /> : <></>} {/* right leg */}
+                    {(counter < 7) && <line x1="150" y1="20" x2="150" y2="40" stroke="black" /> } {/* Rope */}
+                    {(counter < 6) && <circle cx="150" cy="55" r="15" stroke="black" /> }         {/* head */}
+                    {(counter < 5) && <line x1="150" y1="70" x2="150" y2="125" stroke="black" /> }{/* body */}
+                    {(counter < 4) && <line x1="150" y1="70" x2="135" y2="105" stroke="black" />} {/* left arm */}
+                    {(counter < 3) && <line x1="150" y1="70" x2="165" y2="105" stroke="black" /> }{/* right arm */}
+                    {(counter < 2) && <line x1="150" y1="125" x2="135" y2={105+(125-70)} stroke="black" /> } {/* left leg */}
+                    {(counter < 1) && <line x1="150" y1="125" x2="165" y2={105+(125-70)} stroke="black" /> } {/* right leg */}
                     Sorry Your Web browser does not support SVG. :(
                 </svg>
             </div>

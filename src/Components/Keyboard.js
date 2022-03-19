@@ -13,21 +13,21 @@ function Key({letter, onClick, checkKey}){
         else setIsPressed("keys");
   
     }, [checkKey])
-
+    //TODO Context?
     return(
-        <button type="button" className={`${isPressed}`} onClick={()=>{onClick(letter); setIsPressed("keys used");}} >{letter}</button>
+        <button type="button" className={`${isPressed}`} onClick={()=>{onClick({type:"get key", payload: letter}); setIsPressed("keys used");}} >{letter}</button>
     )
 }
 
 // Creates Letter buttons to click on
-export function Keyboard({onClick, onKey, reset}){
+export function Keyboard({ onKey, setGameState}){
 
     return (
         <div id="Keyboard">
             <ul>
-                {letters.map((l, i)=> <li key={i}><Key checkKey={onKey[l.charCodeAt()-65]} onClick={onClick} letter={l} /></li>)}
+                {letters.map((l, i)=> <li key={i}><Key checkKey={onKey[l.charCodeAt()-65]} onClick={setGameState} letter={l} /></li>)}
             </ul>
-            <button className="newGame" onClick={()=>reset()}>New Game</button>
+            <button className="newGame" onClick={()=>setGameState({type: "reset"})}>New Game</button>
         </div>
     )
 }

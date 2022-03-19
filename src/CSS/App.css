@@ -5,6 +5,10 @@
     font-size: 15px;
   }
 
+  body{
+      background-color: dodgerblue;
+  }
+
   h1{
       font-size: 2em;
   }
