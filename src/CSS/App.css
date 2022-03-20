@@ -9,8 +9,8 @@
       background-color: dodgerblue;
       background-image: url('../castle.svg');
       background-repeat:no-repeat;
+      background-position: bottom left;
 
-      /* background-blend-mode:difference; */
   }
 
   h1{
