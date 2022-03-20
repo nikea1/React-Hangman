@@ -119,19 +119,19 @@ export function PlayArea({globalStatus, setGameState}){
         <div id="PlayArea">
             {!globalStatus.isPlaying && displayResult(globalStatus.isWinner, display.answer)}
             <div className="hangman">
-                <svg height="200" width="200">
-                    <line x1="50" y1="180" x2="150" y2="180" stroke="black" />{/* Base */}
-                    <line x1="100" y1="180" x2="100" y2="20" stroke="black" />{/* Pole*/}
-                    <line x1="100" y1="20" x2="150" y2="20" stroke="black" /> {/* Beam */}
+                <svg height="170" width="125">
+                    <line x1={5} y1={165} x2={105} y2={165} stroke="black" />{/* Base */}
+                    <line x1={55} y1={165} x2={55} y2={5} stroke="black" />{/* Pole*/}
+                    <line x1={55} y1={5} x2={105} y2={5} stroke="black" /> {/* Beam */}
                     
                     {/* Draw the man */}
-                    {(globalStatus.guessesLeft < 7) && <line x1="150" y1="20" x2="150" y2="40" stroke="black" /> } {/* Rope */}
-                    {(globalStatus.guessesLeft < 6) && <circle cx="150" cy="55" r="15" stroke="black" /> }         {/* head */}
-                    {(globalStatus.guessesLeft < 5) && <line x1="150" y1="70" x2="150" y2="125" stroke="black" /> }{/* body */}
-                    {(globalStatus.guessesLeft < 4) && <line x1="150" y1="70" x2="135" y2="105" stroke="black" />} {/* left arm */}
-                    {(globalStatus.guessesLeft < 3) && <line x1="150" y1="70" x2="165" y2="105" stroke="black" /> }{/* right arm */}
-                    {(globalStatus.guessesLeft < 2) && <line x1="150" y1="125" x2="135" y2={105+(125-70)} stroke="black" /> } {/* left leg */}
-                    {(globalStatus.guessesLeft < 1) && <line x1="150" y1="125" x2="165" y2={105+(125-70)} stroke="black" /> } {/* right leg */}
+                    {(globalStatus.guessesLeft < 7) && <line x1={105} y1={5} x2={105} y2={25} stroke="black" /> } {/* Rope */}
+                    {(globalStatus.guessesLeft < 6) && <circle cx={105} cy={40} r={15} stroke="black" /> }         {/* head */}
+                    {(globalStatus.guessesLeft < 5) && <line x1={105} y1={55} x2={105} y2={110} stroke="black" /> }{/* body */}
+                    {(globalStatus.guessesLeft < 4) && <line x1={105} y1={55} x2={90} y2={90} stroke="black" />} {/* left arm */}
+                    {(globalStatus.guessesLeft < 3) && <line x1={105} y1={55} x2={120} y2={90} stroke="black" /> }{/* right arm */}
+                    {(globalStatus.guessesLeft < 2) && <line x1={105} y1={110} x2={90} y2={145} stroke="black" /> } {/* left leg */}
+                    {(globalStatus.guessesLeft < 1) && <line x1={105} y1={110} x2={120} y2={145} stroke="black" /> } {/* right leg */}
                     Sorry Your Web browser does not support SVG. :(
                 </svg>
             </div>

@@ -38,13 +38,17 @@
   }
 
   #Status, #PlayArea, #Keyboard{
-      margin-top: 1em;
+      margin-top: 0.75em;
   }
 
   #Keyboard ul{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  .hangman{
+      margin-top: 0.5em;
   }
 
 .keys{
