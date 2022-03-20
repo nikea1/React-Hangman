@@ -7,6 +7,10 @@
 
   body{
       background-color: dodgerblue;
+      background-image: url('../castle.svg');
+      background-repeat:no-repeat;
+
+      /* background-blend-mode:difference; */
   }
 
   h1{
