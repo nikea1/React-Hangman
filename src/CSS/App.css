@@ -11,6 +11,8 @@
 
   h1{
       font-size: 2em;
+      font-family: 'WaltographRegular';
+
   }
 
   ul{
@@ -32,6 +34,8 @@
   }
 
  .display{
+    /* font-family: 'WaltographRegular'; */
+
       font-family: 'Courier New', Courier, monospace;
       font-weight: 700;
       letter-spacing: 4px;
@@ -55,11 +59,15 @@
     padding: 8px 0;
     width: 37.6px;
     margin:2px ;
+    font-family: 'WaltographRegular';
 }
 
 .newGame{
-    margin-top: 1.75em;
-    padding: 0.5em;
+    margin-top: 1.5em;
+    padding: 0.25em;
+    font-family: 'WaltographRegular';
+    font-size: 1.3em;
+
 }
 
 .used{

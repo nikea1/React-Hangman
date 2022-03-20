@@ -128,8 +128,8 @@ export function PlayArea({globalStatus, setGameState}){
                     {(globalStatus.guessesLeft < 7) && <line x1={105} y1={5} x2={105} y2={25} stroke="black" /> } {/* Rope */}
                     {(globalStatus.guessesLeft < 6) && <circle cx={105} cy={40} r={15} stroke="black" /> }         {/* head */}
                     {(globalStatus.guessesLeft < 5) && <line x1={105} y1={55} x2={105} y2={110} stroke="black" /> }{/* body */}
-                    {(globalStatus.guessesLeft < 4) && <line x1={105} y1={55} x2={90} y2={90} stroke="black" />} {/* left arm */}
-                    {(globalStatus.guessesLeft < 3) && <line x1={105} y1={55} x2={120} y2={90} stroke="black" /> }{/* right arm */}
+                    {(globalStatus.guessesLeft < 4) && <line x1={105} y1={55} x2={90} y2={90} stroke="black" /> } {/* left arm */}
+                    {(globalStatus.guessesLeft < 3) && <line x1={105} y1={55} x2={120} y2={90} stroke="black" /> } {/* right arm */}
                     {(globalStatus.guessesLeft < 2) && <line x1={105} y1={110} x2={90} y2={145} stroke="black" /> } {/* left leg */}
                     {(globalStatus.guessesLeft < 1) && <line x1={105} y1={110} x2={120} y2={145} stroke="black" /> } {/* right leg */}
                     Sorry Your Web browser does not support SVG. :(
