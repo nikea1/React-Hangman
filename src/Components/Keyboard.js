@@ -1,33 +1,34 @@
 import { useEffect, useState } from "react";
 
+//Array of letters for buttons
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
 
 //Letter Button Component
-function Key({letter, onClick, checkKey}){
+function Key({letter, setGameState,checkLetter}){
     const [isPressed, setIsPressed] = useState("keys");
 
     //Updates button state if user keys in letter
     useEffect(()=>{
     
-        if(checkKey) setIsPressed("keys used");
+        if(checkLetter) setIsPressed("keys used");
         else setIsPressed("keys");
   
-    }, [checkKey])
-    //TODO Context?
+    },[checkLetter, setIsPressed])
+    
     return(
-        <button type="button" className={`${isPressed}`} onClick={()=>{onClick({type:"get key", payload: letter}); setIsPressed("keys used");}} >{letter}</button>
+        <button type="button" className={`${isPressed}`} onClick={()=>{setGameState({type:"GET_LETTER", payload: letter});}} >{letter}</button>
     )
 }
 
-// Creates Letter buttons to click on
-export function Keyboard({ onKey, setGameState}){
-
+// Container for Letter letter buttons
+export function Keyboard({lettersPressed, setGameState}){
+    console.log("Hello World")
     return (
         <div id="Keyboard">
             <ul>
-                {letters.map((l, i)=> <li key={i}><Key checkKey={onKey[l.charCodeAt()-65]} onClick={setGameState} letter={l} /></li>)}
+                {letters.map((l, i)=> <li key={i}><Key checkLetter={lettersPressed[l.charCodeAt()-65]} setGameState={setGameState} letter={l} /></li>)}
             </ul>
-            <button className="newGame" onClick={()=>setGameState({type: "reset"})}>New Game</button>
+            <button className="newGame" onClick={()=>setGameState({type: "RESET"})}>New Game</button>
         </div>
     )
 }
