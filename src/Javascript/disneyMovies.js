@@ -25,7 +25,7 @@ export const disneyMovies = [
     "Goofy Movie",
     "Lady and the Tramp",
     "Cinderella",
-    "Pete' s Dragon",
+    "Pete's Dragon",
     "The Little Mermaid",
     "Enchanted",
     "The Good Dinosaur",
