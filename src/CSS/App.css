@@ -6,7 +6,7 @@
   }
 
   body{
-      background-color: dodgerblue;
+      background-color: #1248D6;
       background-image: url('../castle2.svg');
       background-repeat:no-repeat;
       background-position: bottom left;
@@ -31,6 +31,8 @@
   }
  .wrapper{
     padding: 0 1em;
+    margin: 0 auto;
+    max-width: 900px;
   }
 
   main{
@@ -42,6 +44,12 @@
       font-family: 'Courier New', Courier, monospace;
       font-weight: 700;
       letter-spacing: 4px;
+  }
+
+  #PlayArea{
+      background: rgba(255 255 255/75%);
+      padding: 16px 0;
+      border-radius: 16px;
   }
 
   #Status, #PlayArea, #Keyboard{
@@ -58,22 +66,30 @@
       margin-top: 0.5em;
   }
 
-.keys{
-    padding: 8px 0;
-    width: 37.6px;
-    margin:2px ;
+.keys, .newGame{
+    background-color: #DAE3E5;
     font-family: 'WaltographRegular';
 }
 
+.keys:hover{
+    background: #BBD1EA;
+}
+
+.keys{
+    padding: 8px 0;
+    width: 40px;
+    margin:2px ;
+    
+}
+
 .newGame{
-    margin-top: 1.5em;
+    margin-top: .5em;
     padding: 0.25em;
-    font-family: 'WaltographRegular';
     font-size: 1.3em;
 
 }
 
-.used{
+.used, .used:hover{
     background: grey;
 } 
 
